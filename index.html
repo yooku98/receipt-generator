@@ -6,8 +6,8 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0B1220">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="YookuInc Receipts">
-<title>YookuInc · Receipt Generator</title>
+<meta name="apple-mobile-web-app-title" content="YookuData Receipts">
+<title>YookuData · Receipt Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ── Reset ── */
@@ -282,7 +282,7 @@ textarea{resize:none;height:72px;font-size:14px}
 <body>
 
 <div class="app-header">
-  <div class="app-logo">&lt;<span>YookuInc</span>/&gt;</div>
+  <div class="app-logo">&lt;<span>YookuData</span>/&gt;</div>
   <div class="header-tag">Receipt Generator</div>
 </div>
 
@@ -410,7 +410,7 @@ const SERVICES = [
   {cat:'Custom', items:['Custom Service']}
 ];
 
-let receiptNum = 'YI-' + String(Math.floor(Math.random()*9000)+1000);
+let receiptNum = 'YD-' + String(Math.floor(Math.random()*9000)+1000);
 
 // Build service select options
 function buildServiceOptions(){
@@ -551,9 +551,9 @@ function generateReceipt(){
   document.getElementById('receipt').innerHTML = `
     <div class="receipt-header">
       <div class="receipt-brand">
-        <div class="receipt-brand-icon">YI</div>
+        <div class="receipt-brand-icon">YD</div>
         <div>
-          <div class="receipt-brand-name">YookuInc</div>
+          <div class="receipt-brand-name">YookuData</div>
           <div class="receipt-brand-sub">willyoks@gmail.com · +233 24 212 3801</div>
         </div>
       </div>
@@ -570,7 +570,7 @@ function generateReceipt(){
       <div class="receipt-parties">
         <div>
           <div class="party-label">From</div>
-          <div class="party-name">YookuInc</div>
+          <div class="party-name">YookuData</div>
           <div class="party-detail">William Thompson<br>Accra, Ghana<br>yooku98.github.io</div>
         </div>
         <div>
@@ -624,7 +624,7 @@ function generateReceipt(){
   }, 100);
 
   // Increment receipt number for next one
-  receiptNum = 'YI-' + String(Math.floor(Math.random()*9000)+1000);
+  receiptNum = 'YD-' + String(Math.floor(Math.random()*9000)+1000);
 }
 
 function printReceipt(){
@@ -635,8 +635,8 @@ async function shareReceipt(){
   if(navigator.share){
     try{
       await navigator.share({
-        title:'YookuInc Receipt',
-        text:'Please find your receipt from YookuInc attached.',
+        title:'YookuData Receipt',
+        text:'Please find your receipt from YookuData attached.',
         url: window.location.href
       });
     } catch(e){ /* cancelled */ }

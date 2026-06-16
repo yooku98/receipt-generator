@@ -1,6 +1,6 @@
 {
-  "name": "YookuInc Receipt Generator",
-  "short_name": "YookuInc",
+  "name": "YookuData Receipt Generator",
+  "short_name": "YookuData",
   "start_url": "receipt-generator.html",
   "display": "standalone",
   "background_color": "#0B1220",
