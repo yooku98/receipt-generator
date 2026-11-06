@@ -327,6 +327,14 @@ textarea{resize:none;height:72px;font-size:14px}
       </select>
     </div>
     <div class="field">
+      <label>Document Number (optional)</label>
+      <input type="text" id="docNum" placeholder="e.g. YD-INV-2026-001 — leave blank for an automatic number">
+    </div>
+    <div class="field">
+      <label>Due Date (invoices only, optional)</label>
+      <input type="date" id="dueDate">
+    </div>
+    <div class="field">
       <label>Payment Method (optional)</label>
       <select id="payMethod">
         <option value="">— Select —</option>
@@ -500,6 +508,13 @@ function today(){
   return `${pad(d.getDate())} ${d.toLocaleString('default',{month:'short'})} ${d.getFullYear()}`;
 }
 
+// '2026-11-20' -> '20 Nov 2026', parsed by hand so the day can't shift with the time zone.
+function formatIsoDate(iso){
+  const [y, m, d] = iso.split('-').map(Number);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${pad(d)} ${months[m - 1]} ${y}`;
+}
+
 function generateReceipt(){
   const client = document.getElementById('clientName').value.trim();
   if(!client){ alert('Please enter the client name.'); return; }
@@ -543,6 +558,13 @@ function generateReceipt(){
   const payMethod = document.getElementById('payMethod').value;
   const note = document.getElementById('receiptNote').value.trim();
 
+  // Invoice vs receipt: money not yet received = invoice.
+  const isInvoice = payStatus === 'INVOICE' || payStatus === 'AWAITING PAYMENT';
+  const docTitle = isInvoice ? 'Invoice' : 'Receipt';
+  const docNum = document.getElementById('docNum').value.trim() || receiptNum;
+  const dueRaw = document.getElementById('dueDate').value; // YYYY-MM-DD or ''
+  const dueText = isInvoice && dueRaw ? formatIsoDate(dueRaw) : '';
+
   const isStatusGreen = payStatus === 'PAID';
   const statusColor = isStatusGreen ? '#16a34a' : '#d97706';
   const statusBg = isStatusGreen ? '#f0fdf4' : '#fffbeb';
@@ -559,10 +581,10 @@ function generateReceipt(){
       </div>
       <div class="receipt-title-row">
         <div>
-          <div class="receipt-title">Receipt</div>
-          <div class="receipt-num">${receiptNum}</div>
+          <div class="receipt-title">${docTitle}</div>
+          <div class="receipt-num">${docNum}</div>
         </div>
-        <div class="receipt-date">${today()}</div>
+        <div class="receipt-date">${today()}${dueText ? `<br>Due ${dueText}` : ''}</div>
       </div>
     </div>
 
@@ -609,7 +631,7 @@ function generateReceipt(){
       <div class="receipt-footer">
         <div class="receipt-footer-left">
           ${payMethod ? `<div>Payment via <strong>${payMethod}</strong></div>` : ''}
-          <div style="margin-top:4px;font-size:10px">Ref: ${receiptNum}</div>
+          <div style="margin-top:4px;font-size:10px">Ref: ${docNum}</div>
         </div>
         <div class="receipt-status" style="background:${statusBg};border-color:${statusBorder};color:${statusColor}">
           ${payStatus}
