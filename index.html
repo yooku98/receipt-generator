@@ -492,13 +492,18 @@ function calcTotal(){
     total += qty * price;
   });
   const sym = currencySymbol(currency);
-  document.getElementById('totalDisplay').textContent = sym + total.toFixed(2);
+  document.getElementById('totalDisplay').textContent = sym + money(total);
 }
 
 document.getElementById('currency').addEventListener('change', calcTotal);
 
 function currencySymbol(c){
   return {GHS:'GHS ',USD:'$',GBP:'£',EUR:'€'}[c]||c+' ';
+}
+
+// Always en-US grouping (8,000.00), whatever the device locale.
+function money(n){
+  return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 function pad(n){return String(n).padStart(2,'0')}
@@ -544,9 +549,9 @@ function generateReceipt(){
       <tr>
         <td>
           <div class="item-name">${name}</div>
-          ${qty > 1 ? `<div class="item-desc">Qty: ${qty} × ${sym}${price.toFixed(2)}</div>` : ''}
+          ${qty > 1 ? `<div class="item-desc">Qty: ${qty} × ${sym}${money(price)}</div>` : ''}
         </td>
-        <td>${sym}${lineTotal.toFixed(2)}</td>
+        <td>${sym}${money(lineTotal)}</td>
       </tr>`;
   });
 
@@ -618,11 +623,11 @@ function generateReceipt(){
       <div class="receipt-totals">
         <div class="total-row">
           <span>Subtotal</span>
-          <span>${sym}${subtotal.toFixed(2)}</span>
+          <span>${sym}${money(subtotal)}</span>
         </div>
         <div class="total-row grand">
           <span>Total</span>
-          <span class="amount">${sym}${subtotal.toFixed(2)}</span>
+          <span class="amount">${sym}${money(subtotal)}</span>
         </div>
       </div>
 
